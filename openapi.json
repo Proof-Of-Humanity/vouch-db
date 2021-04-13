@@ -1,0 +1,178 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "API Service",
+    "version": "1.0.0",
+    "description": "API Service endpoints",
+    "contact": {
+      "email": "contact@kleros.io",
+      "name": "Kleros"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/"
+    }
+  ],
+  "tags": [
+    {
+      "name": "vouch",
+      "description": "Vouch DB API"
+    }
+  ],
+  "paths": {
+    "/vouch/add": {
+      "post": {
+        "tags": [
+          "vouch"
+        ],
+        "summary": "Add a vouch to the database",
+        "operationId": "vouch-add",
+        "requestBody": {
+          "description": "New vouch being saved",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DraftVouchSchema"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Vouch saved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DraftVouchSchema"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/vouch/all": {
+      "get": {
+        "tags": [
+          "vouch"
+        ],
+        "summary": "Get all vouches in database",
+        "operationId": "vouch-get-all",
+        "responses": {
+          "200": {
+            "description": "Search results",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "vouches": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/VouchSchema"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/vouch/search": {
+      "get": {
+        "tags": [
+          "vouch"
+        ],
+        "summary": "Search vouches by vouchee address",
+        "operationId": "vouch-search",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "submissionId",
+            "schema": {
+              "type": "string",
+              "default": "0x0000000000000000000000000000000000000000"
+            },
+            "description": "The address of the profile to search"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Search results",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "vouches": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/VouchSchema"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "DraftVouchSchema": {
+        "type": "object",
+        "properties": {
+          "submissionId": {
+            "type": "string",
+            "example": "0x0000000000000000000000000000000000000000"
+          },
+          "vouchers": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "signatures": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "expirationTimestamps": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          }
+        }
+      },
+      "VouchSchema": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/DraftVouchSchema"
+          }
+        ],
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "5d7224d3b40b1a1a046697dd"
+          }
+        }
+      }
+    }
+  }
+}
