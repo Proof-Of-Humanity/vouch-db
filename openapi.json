@@ -34,7 +34,24 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/DraftVouchSchema"
+                "properties": {
+                  "submissionId": {
+                    "type": "string",
+                    "default": "0x0000000000000000000000000000000000000000"
+                  },
+                  "signature": {
+                    "type": "string",
+                    "default": "0x0000000000000000000000000000000000000000000000000000000000000000"
+                  },
+                  "digest": {
+                    "type": "string",
+                    "default": "0x0000000000000000000000000000000000000000"
+                  },
+                  "expirationTimestamps": {
+                    "type": "number",
+                    "default": 1234648641
+                  }
+                }
               }
             }
           }
@@ -142,19 +159,22 @@
           "vouchers": {
             "type": "array",
             "items": {
-              "type": "string"
+              "type": "string",
+              "example": "0x0000000000000000000000000000000000000000"
             }
           },
           "signatures": {
             "type": "array",
             "items": {
-              "type": "string"
+              "type": "string",
+              "example": "0x0000000000000000000000000000000000000000000000000000000000000000"
             }
           },
           "expirationTimestamps": {
             "type": "array",
             "items": {
-              "type": "number"
+              "type": "number",
+              "example": 1321351531
             }
           }
         }
