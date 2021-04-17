@@ -1,26 +1,35 @@
 import { RequestHandler } from 'express';
 import Joi from '@hapi/joi';
-import ethers from 'ethers';
+// eslint-disable-next-line camelcase
+import { recoverTypedSignature_v4 } from 'eth-sig-util';
 import requestMiddleware from '../../middleware/request-middleware';
 import Vouch from '../../models/Vouch';
 
 const addVouchSchema = Joi.object().keys({
-  submissionId: Joi.string().required(),
   signature: Joi.string().required(),
-  digest: Joi.string().required(),
-  expirationTimestamps: Joi.number().required()
+  msgData: Joi.string().required()
 });
 
 const add: RequestHandler = async (req, res) => {
   const {
-    submissionId,
     signature,
-    digest,
-    expirationTimestamp
+    msgData: msgDataString
   } = req.body;
+  const msgData = JSON.parse(msgDataString);
 
-  let vouch = await Vouch.findOne({ submissionId: new RegExp(`.*${submissionId}.*`, 'i') });
-  const voucherAddr = ethers.utils.recoverAddress(digest, signature);
+  const { message } = msgData || {};
+  const {
+    vouchedSubmission: submissionId,
+    voucherExpirationTimestamp: expirationTimestamp
+  } = message || {};
+
+  let vouch = await Vouch.findOne({ submissionId });
+
+  const voucherAddr = recoverTypedSignature_v4({
+    data: msgData,
+    sig: signature
+  });
+
   if (!vouch) {
     vouch = new Vouch({
       submissionId,
@@ -28,7 +37,7 @@ const add: RequestHandler = async (req, res) => {
       signatures: [signature],
       expirationTimestamps: [expirationTimestamp]
     });
-  } else {
+  } else if (!vouch.vouchers.includes(voucherAddr)) {
     vouch.signatures = [...vouch.signatures, signature];
     vouch.vouchers = [...vouch.vouchers, voucherAddr];
     vouch.expirationTimestamps = [...vouch.expirationTimestamps, expirationTimestamp];
