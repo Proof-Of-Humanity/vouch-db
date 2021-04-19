@@ -35,12 +35,14 @@ const add: RequestHandler = async (req, res) => {
       submissionId,
       vouchers: [voucherAddr],
       signatures: [signature],
-      expirationTimestamps: [expirationTimestamp]
+      expirationTimestamps: [expirationTimestamp],
+      vouchersLength: 1
     });
   } else if (!vouch.vouchers.includes(voucherAddr)) {
     vouch.signatures = [...vouch.signatures, signature];
     vouch.vouchers = [...vouch.vouchers, voucherAddr];
     vouch.expirationTimestamps = [...vouch.expirationTimestamps, expirationTimestamp];
+    vouch.vouchersLength += 1;
   }
 
   await vouch.save();

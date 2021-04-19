@@ -14,6 +14,8 @@ export interface IVouch extends ITimeStampedDocument {
   signatures: string[];
   /** Expiration timestamps of the vouches */
   expirationTimestamps: number[];
+  /** The lenght of the vouchers array. */
+  vouchersLength: number;
 }
 
 interface IVouchModel extends Model<IVouch> { }
@@ -22,7 +24,8 @@ const schema = new Schema<IVouch>({
   submissionId: { type: String, index: true, required: true },
   vouchers: { type: [String], required: true },
   signatures: { type: [String], required: true },
-  expirationTimestamps: { type: [Number], required: true }
+  expirationTimestamps: { type: [Number], required: true },
+  vouchersLength: { type: Number, required: true }
 });
 
 // Add timestamp plugin for createdAt and updatedAt in miliseconds from epoch
