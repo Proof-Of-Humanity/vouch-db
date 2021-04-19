@@ -56,10 +56,6 @@
                           "verifyingContract": {
                             "type":"string",
                             "default": "0x0000000000000000000000000000000000000000"
-                          },
-                          "version": {
-                            "type": "string",
-                            "default": "1"
                           }
                         }
                       },
