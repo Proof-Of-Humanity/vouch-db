@@ -7,9 +7,12 @@ if (result.error) {
 }
 
 import util from 'util';
+import { ethers } from 'ethers';
 import app from './app';
+import garbageCollection from './cleanup';
 import SafeMongooseConnection from './lib/safe-mongoose-connection';
 import logger from './logger';
+import pohAbi from './abis/proof-of-humanity.json';
 
 const PORT = process.env.PORT || 3000;
 
@@ -74,3 +77,8 @@ process.on('SIGINT', () => {
     process.exit(0);
   }, true);
 });
+
+const provider = new ethers.providers.InfuraProvider('homestead', process.env.INFURA_KEY);
+const poh = new ethers.Contract(process.env.POH_ADDRESS, pohAbi, provider);
+
+setInterval(() => garbageCollection(poh), Number(process.env.GC_PERIOD_MINUTES) * 60 * 1000);
