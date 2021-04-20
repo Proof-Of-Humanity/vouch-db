@@ -20,7 +20,7 @@ const search: RequestHandler = async (req, res) => {
 
   if (voucherAddr) {
     query['$expr'] = query['$expr'] || {};
-    query['$expr']['$in'] = [voucherAddr, '$vouchers'];
+    query['$expr']['$in'] = [String(voucherAddr).toLowerCase(), '$vouchers'];
   }
 
   const vouches = await Vouch.find(query);
