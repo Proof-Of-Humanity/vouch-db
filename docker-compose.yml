@@ -18,12 +18,8 @@ services:
     image: api-server
     restart: unless-stopped
     depends_on: [mongo]
-    environment:
-      - NODE_ENV=production
-      - PORT=3000
-      - MONGO_URL=mongodb://host.docker.internal:27017/vouches
-      - GC_PERIOD_MINUTES=1
-      - POH_ADDRESS=0xc5e9ddebb09cd64dfacab4011a0d5cedaf7c9bdb
+    env_file:
+    - .env
     volumes:
       - ./logs:/logs
     networks:
