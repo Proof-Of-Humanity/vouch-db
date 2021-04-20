@@ -20,16 +20,6 @@ const rateLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100
 });
-const whitelist = ['https://vouches.proofofhumanity.id', 'http://localhost:3001', 'https://deploy-preview-222--proof-of-humanity.netlify.app'];
-const corsOptions = {
-  origin(origin: any, callback: any) {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  }
-};
 
 function logResponseTime(req: Request, res: Response, next: NextFunction) {
   const startHrTime = process.hrtime();
@@ -55,7 +45,7 @@ app.use(speedLimiter);
 app.use(rateLimiter);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cors(corsOptions));
+app.use(cors());
 
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }));
 
