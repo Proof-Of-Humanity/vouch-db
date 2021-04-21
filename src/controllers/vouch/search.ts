@@ -5,11 +5,12 @@ import Vouch from '../../models/Vouch';
 
 const searchVouchSchema = Joi.object().keys({
   submissionId: Joi.string(),
-  voucherAddr: Joi.string()
+  voucherAddr: Joi.string(),
+  minVouchers: Joi.number()
 });
 
 const search: RequestHandler = async (req, res) => {
-  const { submissionId, voucherAddr } = req.query;
+  const { submissionId, voucherAddr, minVouchers } = req.query;
 
   const query: any = {};
   if (submissionId) {
@@ -17,6 +18,8 @@ const search: RequestHandler = async (req, res) => {
       $eq: [String(submissionId).toLowerCase(), '$submissionId']
     };
   }
+
+  if (minVouchers) query.vouchersLength = { $gte: Number(minVouchers) };
 
   if (voucherAddr) {
     query['$expr'] = query['$expr'] || {};
