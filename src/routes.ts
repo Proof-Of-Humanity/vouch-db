@@ -12,7 +12,6 @@ const router = Router();
 
 // Vouch routes
 router.post('/vouch/add', VouchController.add);
-router.get('/vouch/all', VouchController.all);
 router.get('/vouch/search', VouchController.search);
 
 // Dev routes
