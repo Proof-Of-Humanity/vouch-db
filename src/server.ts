@@ -81,4 +81,6 @@ process.on('SIGINT', () => {
 const provider = new ethers.providers.InfuraProvider('homestead', process.env.INFURA_KEY);
 const poh = new ethers.Contract(process.env.POH_ADDRESS, pohAbi, provider);
 
+// Garbage collect on init and then periodically.
+garbageCollection(poh);
 setInterval(() => garbageCollection(poh), Number(process.env.GC_PERIOD_MINUTES) * 60 * 1000);

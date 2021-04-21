@@ -16,7 +16,7 @@
     "build": "tsc",
     "lint": "./node_modules/eslint/bin/eslint.js  src --ext .ts",
     "dev": "./scripts/dev.sh",
-    "dev-server": "NODE_ENV=development nodemon",
+    "dev-server": "NODE_ENV=development MONGO_URL=mongodb://localhost:27017/vouches nodemon",
     "ts-node-server": "ts-node src/server.ts",
     "start": "node dist/src/server.js",
     "test": "jest",

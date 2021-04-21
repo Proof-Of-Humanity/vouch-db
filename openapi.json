@@ -137,37 +137,6 @@
         }
       }
     },
-    "/vouch/all": {
-      "get": {
-        "tags": [
-          "vouch"
-        ],
-        "summary": "Get all vouches in database",
-        "operationId": "vouch-get-all",
-        "responses": {
-          "200": {
-            "description": "Search results",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "vouches": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/VouchSchema"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Server error"
-          }
-        }
-      }
-    },
     "/vouch/search": {
       "get": {
         "tags": [
@@ -184,6 +153,24 @@
               "default": "0x0000000000000000000000000000000000000000"
             },
             "description": "The address of the profile to search"
+          },
+          {
+            "in": "query",
+            "name": "minVouchers",
+            "schema": {
+              "type": "number",
+              "default": "1"
+            },
+            "description": "Return only users with a minimum of vouchers"
+          },
+          {
+            "in": "query",
+            "name": "voucherAddr",
+            "schema": {
+              "type": "string",
+              "default": "0x0000000000000000000000000000000000000000"
+            },
+            "description": "Return all users that someone vouched for (and which were not already processed)."
           }
         ],
         "responses": {
