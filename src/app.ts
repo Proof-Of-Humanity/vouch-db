@@ -12,13 +12,13 @@ import logger from './logger';
 
 const app = express();
 const speedLimiter = slowDown({
-  windowMs: 15 * 60 * 1000,
-  delayAfter: 100,
+  windowMs: 3 * 60 * 1000,
+  delayAfter: 500,
   delayMs: 500
 });
 const rateLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 100
+  windowMs: 3 * 60 * 1000,
+  max: 500
 });
 
 function logResponseTime(req: Request, res: Response, next: NextFunction) {
