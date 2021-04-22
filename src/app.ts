@@ -3,24 +3,12 @@ import compression from 'compression';
 import path from 'path';
 import express, { Request, Response, NextFunction } from 'express';
 import helmet from 'helmet';
-import slowDown from 'express-slow-down';
-import rateLimit from 'express-rate-limit';
 import cors from 'cors';
 import ApplicationError from './errors/application-error';
 import routes from './routes';
 import logger from './logger';
 
 const app = express();
-const speedLimiter = slowDown({
-  windowMs: 3 * 60 * 1000,
-  delayAfter: 500,
-  delayMs: 500
-});
-const rateLimiter = rateLimit({
-  windowMs: 3 * 60 * 1000,
-  max: 500
-});
-
 function logResponseTime(req: Request, res: Response, next: NextFunction) {
   const startHrTime = process.hrtime();
 
@@ -41,8 +29,6 @@ function logResponseTime(req: Request, res: Response, next: NextFunction) {
 app.use(logResponseTime);
 app.use(compression());
 app.use(helmet());
-app.use(speedLimiter);
-app.use(rateLimiter);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
