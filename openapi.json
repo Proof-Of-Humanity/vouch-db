@@ -171,6 +171,15 @@
               "default": "0x0000000000000000000000000000000000000000"
             },
             "description": "Return all users that someone vouched for (and which were not already processed)."
+          },
+          {
+            "in": "query",
+            "name": "includeResolved",
+            "schema": {
+              "type": "boolean",
+              "default": "false"
+            },
+            "description": "Include vouches for profiles that are resolved"
           }
         ],
         "responses": {
