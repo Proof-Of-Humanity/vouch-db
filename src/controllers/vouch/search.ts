@@ -1,4 +1,5 @@
 import Joi from '@hapi/joi';
+import { logger } from 'ethers';
 import { RequestHandler } from 'express';
 import requestMiddleware from '../../middleware/request-middleware';
 import Vouch from '../../models/Vouch';
@@ -14,6 +15,8 @@ const search: RequestHandler = async (req, res) => {
   const {
     submissionId, voucherAddr, minVouchers, includeResolved
   } = req.query;
+  logger.info('header', req.header);
+  logger.info('headers', req.headers);
 
   const query: any = {};
   if (submissionId) {

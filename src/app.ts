@@ -26,6 +26,7 @@ function logResponseTime(req: Request, res: Response, next: NextFunction) {
   next();
 }
 
+app.enable('trust proxy');
 app.use(logResponseTime);
 app.use(compression());
 app.use(helmet());
