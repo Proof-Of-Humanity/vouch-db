@@ -32,7 +32,7 @@ const search: RequestHandler = async (req, res) => {
   if (!submissionId && !voucherAddr && !includeResolved) query.resolved = null;
 
   const vouches = await Vouch.find(query);
-  res.send({ vouches });
+  res.json({ vouches });
 };
 
 export default requestMiddleware(search, { validation: { body: searchVouchSchema } });

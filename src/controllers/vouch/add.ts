@@ -2,13 +2,18 @@ import { RequestHandler } from 'express';
 import Joi from '@hapi/joi';
 // eslint-disable-next-line camelcase
 import { recoverTypedSignature_v4 } from 'eth-sig-util';
+import { ethers } from 'ethers';
 import requestMiddleware from '../../middleware/request-middleware';
 import Vouch from '../../models/Vouch';
+import pohAbi from '../../abis/proof-of-humanity.json';
 
 const addVouchSchema = Joi.object().keys({
   signature: Joi.string().required(),
   msgData: Joi.string().required()
 });
+
+const provider = new ethers.providers.InfuraProvider('homestead', process.env.INFURA_KEY);
+const poh = new ethers.Contract(process.env.POH_ADDRESS, pohAbi, provider);
 
 const add: RequestHandler = async (req, res) => {
   const {
@@ -23,13 +28,19 @@ const add: RequestHandler = async (req, res) => {
     voucherExpirationTimestamp: expirationTimestamp
   } = message || {};
 
-  let vouch = await Vouch.findOne({ submissionId });
-
   const voucherAddr = recoverTypedSignature_v4({
     data: msgData,
     sig: signature
   });
 
+  if (!(await poh.isRegistered(voucherAddr))) {
+    res.status(400).json({
+      message: 'Voucher not registered.'
+    });
+    return;
+  }
+
+  let vouch = await Vouch.findOne({ submissionId });
   if (!vouch) {
     vouch = new Vouch({
       submissionId,
@@ -47,7 +58,7 @@ const add: RequestHandler = async (req, res) => {
 
   await vouch.save();
 
-  res.send({
+  res.json({
     message: 'Saved',
     vouch: vouch.toJSON()
   });
