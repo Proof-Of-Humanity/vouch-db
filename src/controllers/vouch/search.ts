@@ -15,8 +15,6 @@ const search: RequestHandler = async (req, res) => {
   const {
     submissionId, voucherAddr, minVouchers, includeResolved
   } = req.query;
-  logger.info('header', req.header);
-  logger.info('headers', req.headers);
 
   const query: any = {};
   if (submissionId) {
