@@ -13,6 +13,7 @@ import garbageCollection from './cleanup';
 import SafeMongooseConnection from './lib/safe-mongoose-connection';
 import logger from './logger';
 import pohAbi from './abis/proof-of-humanity.json';
+import Vouch from './models/Vouch';
 
 const PORT = process.env.PORT || 3000;
 
@@ -84,3 +85,13 @@ const poh = new ethers.Contract(process.env.POH_ADDRESS, pohAbi, provider);
 // Garbage collect on init and then periodically.
 garbageCollection(poh);
 setInterval(() => garbageCollection(poh), Number(process.env.GC_PERIOD_MINUTES) * 60 * 1000);
+
+// Listen for reapply events and "unresolve" submissions.
+poh.on('ReapplySubmission', async _submissionID => {
+  const user = await Vouch.findOne({
+    $eq: [String(_submissionID).toLowerCase(), '$submissionId']
+  });
+
+  user.resolved = false;
+  user.save();
+});
