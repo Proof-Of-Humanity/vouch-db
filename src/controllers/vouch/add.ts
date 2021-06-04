@@ -4,7 +4,7 @@ import Joi from '@hapi/joi';
 import { recoverTypedSignature_v4 } from 'eth-sig-util';
 import { ethers } from 'ethers';
 import requestMiddleware from '../../middleware/request-middleware';
-import Vouch from '../../models/Vouch';
+import { Vouch } from '../../models';
 import pohAbi from '../../abis/proof-of-humanity.json';
 
 const addVouchSchema = Joi.object().keys({
