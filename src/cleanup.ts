@@ -1,6 +1,6 @@
 import { ethers } from 'ethers';
 import logger from './logger';
-import { Vouch } from './models;
+import { Vouch } from './models';
 
 const garbageCollection = async function (poh: ethers.Contract) {
   logger.info('Running garbage collection');
