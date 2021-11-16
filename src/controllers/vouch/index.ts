@@ -1,7 +1,5 @@
-import add from './add';
-import search from './search';
+import add from "./add";
+import search from "./search";
+import deleteSubmission from "./delete-submission";
 
-export {
-  add,
-  search
-};
+export { add, search, deleteSubmission };

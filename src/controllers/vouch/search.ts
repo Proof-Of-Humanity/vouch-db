@@ -1,5 +1,4 @@
 import Joi from '@hapi/joi';
-import { logger } from 'ethers';
 import { RequestHandler } from 'express';
 import requestMiddleware from '../../middleware/request-middleware';
 import { Vouch } from '../../models';

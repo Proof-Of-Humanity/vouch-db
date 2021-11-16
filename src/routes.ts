@@ -26,6 +26,7 @@ const rateLimiter = rateLimit({
 // Vouch routes
 router.post('/vouch/add', speedLimiter, rateLimiter, VouchController.add);
 router.get('/vouch/search', VouchController.search);
+router.post("/vouch/deleteSubmission", VouchController.deleteSubmission);
 
 // Dev routes
 if (process.env.NODE_ENV === 'development') {

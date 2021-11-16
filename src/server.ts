@@ -1,4 +1,3 @@
-/* eslint-disable import/first */
 import dotenv from 'dotenv';
 
 const result = dotenv.config();
@@ -19,7 +18,7 @@ const PORT = process.env.PORT || 3000;
 
 let debugCallback = null;
 if (process.env.NODE_ENV === 'development') {
-  debugCallback = (collectionName: string, method: string, query: any, doc: string): void => {
+  debugCallback = (collectionName: string, method: string, query: any): void => {
     const message = `${collectionName}.${method}(${util.inspect(query, { colors: true, depth: null })})`;
     logger.log({
       level: 'silly',
@@ -60,7 +59,7 @@ if (process.env.MONGO_URL == null) {
   });
 }
 
-const provider = new ethers.providers.InfuraProvider('homestead', process.env.INFURA_KEY);
+const provider = new ethers.providers.InfuraProvider(process.env.CHAIN, process.env.INFURA_KEY);
 const poh = new ethers.Contract(process.env.POH_ADDRESS, pohAbi, provider);
 
 // Listen for reapply events and "unresolve" submissions.
