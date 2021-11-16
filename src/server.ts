@@ -59,7 +59,7 @@ if (process.env.MONGO_URL == null) {
   });
 }
 
-const provider = new ethers.providers.InfuraProvider(process.env.CHAIN, process.env.INFURA_KEY);
+const provider = new ethers.providers.InfuraProvider('homestead', process.env.INFURA_KEY);
 const poh = new ethers.Contract(process.env.POH_ADDRESS, pohAbi, provider);
 
 // Listen for reapply events and "unresolve" submissions.
