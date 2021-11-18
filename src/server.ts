@@ -1,4 +1,3 @@
-/* eslint-disable import/first */
 import dotenv from 'dotenv';
 
 const result = dotenv.config();
@@ -19,7 +18,7 @@ const PORT = process.env.PORT || 3000;
 
 let debugCallback = null;
 if (process.env.NODE_ENV === 'development') {
-  debugCallback = (collectionName: string, method: string, query: any, doc: string): void => {
+  debugCallback = (collectionName: string, method: string, query: any): void => {
     const message = `${collectionName}.${method}(${util.inspect(query, { colors: true, depth: null })})`;
     logger.log({
       level: 'silly',
