@@ -39,13 +39,6 @@ const deleteSubmission: RequestHandler = async (req, res) => {
     sig: signature as string,
   });
 
-  const query: any = {};
-  if (submissionId) {
-    query["$expr"] = {
-      $eq: [normalizedSubmissionId, "$submissionId"],
-    };
-  }
-
   if (!signature || normalizedSubmissionId !== recoveredAddr.toLowerCase()) {
     res.status(401).json({
       message: "Removal not authorized.",
@@ -53,7 +46,11 @@ const deleteSubmission: RequestHandler = async (req, res) => {
     return;
   }
 
-  const vouches = await Vouch.findOneAndDelete(query);
+  const vouches = await Vouch.findOneAndDelete({
+    $expr: {
+      $eq: [normalizedSubmissionId, "$submissionId"],
+    },
+  });
   res.json({ vouches });
 };
 
