@@ -39,7 +39,7 @@
     "express-rate-limit": "^5.2.6",
     "express-slow-down": "^1.4.0",
     "helmet": "^4.4.1",
-    "mongoose": "5.12.3",
+    "mongoose": "5.13.15",
     "swagger-ui-express": "4.1.6",
     "web3": "^1.3.5",
     "winston": "3.3.3",
